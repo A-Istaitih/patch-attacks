@@ -1,0 +1,14 @@
+﻿18/11:
+* goal: verify local robustness to patch attacks
+   * given a network, an input x (correctly classified to label y), and a patch size NxN, prove that for any input that is identical to x except for the values within the patch (which could be anything) that input is classified as y
+   * approach: rely on alpha-beta crown as the base verifier https://github.com/Verified-Intelligence/alpha-beta-CROWN
+   * we want to define an algorithm that upon need breaks the problem into subproblems that can be verified with CROWN 
+      * similar to https://ddana.net.technion.ac.il/files/2023/04/Deep-Learning-Robustness-Verification-for-Few-Pixel-Attacks.pdf
+   * for now start a “benchmark”: collect three networks from a b crown that are relatively small and 20 images of different classes, say from MNIST, define patches with the max size that a b crown can verify in a reasonable time say 10min-15 min (3x50, fully connected, conv) and this is what we’ll attempt to improve 
+      * later we’ll look for more challenging tasks that take longer 
+   * then identify where it fails: attempt to add few pixels to the patch and see when it fails/takes much longer to verify, then attempt to split in the middle, choose based on intuition where to split, see if it helps
+   * create plots that show the verification time of each approach: baseline (a b crown), your splits,
+      * maybe use the verifier’s gradient to identify what pixel to split
+      * maybe do multiple splits but abstract them together 
+   * make sure you understand the changes you make in a b crown code, it’s a complex system
+      * tests, read the code
